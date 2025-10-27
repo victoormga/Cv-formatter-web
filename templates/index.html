@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CV Formatter</title>
+  <link rel="icon" href="/static/fav.ico" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>CV Formatter</h1>
+    <p class="lead">Sube tu <strong>CV (PDF)</strong> y el <strong>rol (TXT)</strong></code>.</p>
+
+    <form id="form" action="/process" method="post" enctype="multipart/form-data">
+      <div class="field">
+        <label>CV (PDF) *</label>
+        <input type="file" name="cv_pdf" accept="application/pdf" required />
+      </div>
+
+      <div class="field">
+        <label>Rol (TXT) *</label>
+        <input type="file" name="rol_txt" accept="text/plain,.txt" required />
+      </div>
+
+      <details class="optional">
+        <summary>Opcionales</summary>
+        <div class="field">
+          <label>Plantilla email (PDF)</label>
+          <input type="file" name="plantilla_pdf" accept="application/pdf" />
+        </div>
+      </details>
+
+      <button id="btn" type="submit">Convertir</button>
+      <div id="progress" class="hidden">Procesando…</div>
+    </form>
+
+    <footer>
+      <small>Funciona sin API de OpenAI; si añades tu <code>OPENAI_API_KEY</code> mejora la extracción.</small>
+    </footer>
+  </main>
+
+  <script>
+    // Aviso si falta el logo (opcional)
+    (async () => {
+      try {
+        const res = await fetch('/static/logo.jpg', { method: 'HEAD' });
+        if (!res.ok) console.warn('Logo no encontrado en /static/logo.jpg');
+      } catch (e) { console.warn('No se pudo verificar el logo'); }
+    })();
+
+    const form = document.getElementById('form');
+    const btn = document.getElementById('btn');
+    const progress = document.getElementById('progress');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btn.disabled = true; progress.classList.remove('hidden');
+      const fd = new FormData(form);
+      const res = await fetch('/process', { method: 'POST', body: fd });
+      if (!res.ok) {
+        const msg = await res.text();
+        alert('Error en el procesamiento: ' + msg);
+        btn.disabled = false; progress.classList.add('hidden');
+        return;
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'cv_resultados.zip'; a.click();
+      URL.revokeObjectURL(url);
+      btn.disabled = false; progress.classList.add('hidden');
+    });
+  </script>
+</body>
+</html>
