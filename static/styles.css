@@ -1,19 +1,116 @@
-/* --- Transcribir entrevista (añadidos mínimos) --- */
+/* ===== Paleta y base ===== */
+:root{
+  --text:#e6eaf2;
+  --muted:#9aa3b2;
+  --accent:#5b8cfe;
+  --bg:#0b122a;
+  --card:#0f1630;
+  --stroke:#2a335e;
+}
+
+*{ box-sizing:border-box }
+html, body{
+  margin:0; padding:0;
+  background:var(--bg);
+  color:var(--text);
+  font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* ===== Layout principal ===== */
+main.container{
+  max-width: 880px;
+  margin: 48px auto;
+  padding: 0 20px;
+}
+
+h1{ margin:0 0 12px; font-size:28px }
+.lead{ color:var(--muted); margin:0 0 24px }
+
+/* ===== Formulario ===== */
+form#form{
+  background:var(--card);
+  border:1px solid var(--stroke);
+  border-radius:16px;
+  padding:20px;
+}
+
+.field{
+  display:grid;
+  gap:8px;
+  margin-bottom:16px;
+}
+
+.field label{
+  font-weight:600;
+}
+
+input[type="file"]{
+  width:100%;
+  padding:10px;
+  border:1px solid var(--stroke);
+  border-radius:10px;
+  background:#0b122a;
+  color:var(--text);
+}
+input[type="file"]:focus{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+
+/* Opcionales (details/summary) */
+details.optional{
+  background:#0b122a;
+  border:1px solid var(--stroke);
+  border-radius:12px;
+  padding:10px 12px;
+  margin:4px 0 16px;
+}
+details.optional > summary{
+  cursor:pointer;
+  font-weight:600;
+  color:var(--text);
+  list-style:none;
+}
+details.optional > summary::-webkit-details-marker{ display:none }
+
+/* Botón + progreso */
+button#btn{
+  appearance:none;
+  border:0;
+  border-radius:10px;
+  padding:12px 16px;
+  background:var(--accent);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+button#btn:disabled{
+  opacity:.6; cursor:not-allowed;
+}
+
+#progress{
+  display:inline-block;
+  margin-left:12px;
+  color:var(--muted);
+}
+.hidden{ display:none !important }
+
+/* Footer */
+footer{ margin:16px 4px 0; color:var(--muted) }
+footer code{ color:#cbd5ff }
+
+/* ===== Tus clases originales (por si las usas más tarde) ===== */
 .divider{
   height:1px; width:100%;
-  background:linear-gradient(90deg, transparent, #2a335e, transparent);
-  margin:24px 0;
-  border:0;
+  background:linear-gradient(90deg, transparent, var(--stroke), transparent);
+  margin:24px 0; border:0;
 }
-
 .card{
-  background:#0f1630;
-  border:1px solid #2a335e;
+  background:var(--card);
+  border:1px solid var(--stroke);
   border-radius:16px;
-  padding:16px;
-  margin:24px 0;
+  padding:16px; margin:24px 0;
 }
-
 .card h2{ margin:0 0 8px; font-size:20px }
 .card .help{ color:var(--muted); margin:0 0 12px }
 
@@ -23,20 +120,10 @@
 #progressTrans{ color:var(--muted) }
 
 textarea#previewTXT{
-  background:#0f1630;
+  background:var(--card);
   color:var(--text);
-  border:1px solid #2a335e;
+  border:1px solid var(--stroke);
   border-radius:12px;
   padding:12px;
   resize:vertical;
-}
-
-/* Mejoras sutiles al input file dentro de tarjetas secundarias */
-#transcriber input[type=file]{
-  background:#0b122a;
-  border-color:#2a335e;
-}
-#transcriber input[type=file]:focus{
-  outline:2px solid var(--accent);
-  outline-offset:2px;
 }
